@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pega - Vehicle Service Management Portal</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Ambient Glows -->
+  <div class="lobby-bg-glows">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+  </div>
+
+  <!-- Pega Header -->
+  <header class="pega-header">
+    <div class="header-left">
+      <div class="pega-grid-icon">
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+      </div>
+      <div class="pega-logo">P</div>
+      <div class="pega-title-group">
+        <span class="app-title">Vehicle Service Management</span>
+        <span class="app-sub">Pega Constellation Case Worker Portal</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="new-case-btn" id="btn-new-case">
+        <span class="plus">+</span> New Case
+      </button>
+      <div class="divider"></div>
+      <span class="role-badge">Service Advisor</span>
+      <div class="user-profile">
+        <div class="user-avatar">AU</div>
+        <span class="user-name">Author (You)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="pega-main">
+    
+    <!-- Left Navigation Rail -->
+    <aside class="sidebar-rail">
+      <div class="rail-item active" title="Case Management">📁</div>
+      <div class="rail-item" title="Data Types">🗄️</div>
+      <div class="rail-item" title="Work Queues">📋</div>
+      <div class="rail-item" title="Reports">📊</div>
+      <div class="rail-item" title="Settings">⚙️</div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <div class="workspace-area">
+      
+      <!-- Stage Tracker / Chevron Bar -->
+      <div class="chevron-bar">
+        <div class="chevron-step active" id="chev-1">
+          <span class="step-num">1</span>
+          <span class="step-label">Request Intake</span>
+        </div>
+        <div class="chevron-step" id="chev-2">
+          <span class="step-num">2</span>
+          <span class="step-label">Inspection Diagnosis</span>
+        </div>
+        <div class="chevron-step" id="chev-3">
+          <span class="step-num">3</span>
+          <span class="step-label">Estimate Approval</span>
+        </div>
+        <div class="chevron-step" id="chev-4">
+          <span class="step-num">4</span>
+          <span class="step-label">Service Execution</span>
+        </div>
+        <div class="chevron-step" id="chev-5">
+          <span class="step-num">5</span>
+          <span class="step-label">Service Completion</span>
+        </div>
+      </div>
+
+      <!-- Two-Column Case Content -->
+      <div class="case-grid">
+        
+        <!-- Case Summary Card (Left Column) -->
+        <div class="case-summary-card">
+          <div class="summary-header">
+            <div class="car-badge">🚗</div>
+            <div>
+              <h3 class="case-title">Vehicle Service Request</h3>
+              <span class="case-id" id="display-case-id">S-2026</span>
+            </div>
+          </div>
+
+          <div class="status-box">
+            <span class="status-title">Work Status</span>
+            <span class="status-pill" id="display-status">PENDING-INTAKE</span>
+          </div>
+
+          <div class="summary-details">
+            <div class="detail-row">
+              <span class="detail-label">Service Title</span>
+              <span class="detail-val" id="sum-title">Annual Maintenance</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Customer</span>
+              <span class="detail-val highlight" id="sum-customer">Not Selected</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Vehicle</span>
+              <span class="detail-val highlight" id="sum-vehicle">Not Selected</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Assigned Tech</span>
+              <span class="detail-val" id="sum-tech">tech1@vehicle.com</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Total Estimated</span>
+              <span class="detail-val price" id="sum-cost">₹0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Workspace Area (Right Column) -->
+        <div class="case-action-card">
+          
+          <!-- STAGE 1: INTAKE -->
+          <div class="stage-pane active" id="stage-1">
+            <div class="pane-header">
+              <h2>Step 1: Collect Customer & Vehicle Intake Details</h2>
+              <p class="pane-desc">Search and select the registered customer profile and allocate vehicle specifications.</p>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Customer *</label>
+                <select id="inp-customer" class="pega-input">
+                  <option value="">Select a customer...</option>
+                  <option value="vin-cus011">vin-cus011 — Naresh (Individual)</option>
+                  <option value="vin-cus001">vin-cus001 — Kumar (Corporate)</option>
+                  <option value="vin-cus918">vin-cus918 — Priya Sharma (Individual)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Vehicle *</label>
+                <select id="inp-vehicle" class="pega-input">
+                  <option value="">Select vehicle...</option>
+                  <option value="Creta SX">Hyundai Creta SX (KL-07-CC-4011)</option>
+                  <option value="Toyota Camry">Toyota Camry Hybrid (KL-01-BX-9022)</option>
+                  <option value="MG ZS EV">MG ZS EV Excite (KL-08-EV-8821)</option>
+                </select>
+              </div>
+
+              <div class="form-group full-width">
+                <label>Service Request Title</label>
+                <input type="text" id="inp-title" class="pega-input" value="10,000 KM Periodic Service & Brake Checkup">
+              </div>
+
+              <div class="form-group full-width">
+                <label>Reported Symptoms / Customer Notes</label>
+                <textarea id="inp-symptoms" class="pega-input" rows="3">Engine making slight vibration at idle; dashboard inspection light illuminated; request complete fluid inspection.</textarea>
+              </div>
+            </div>
+
+            <div class="action-footer">
+              <button class="btn-ai" id="btn-ai-fill">✨ Fill form with AI</button>
+              <div class="footer-right">
+                <button class="btn-secondary" id="btn-save-draft">Save for later</button>
+                <button class="btn-primary" onclick="goToStage(2)">Next: Inspection →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAGE 2: INSPECTION DIAGNOSIS -->
+          <div class="stage-pane" id="stage-2">
+            <div class="pane-header">
+              <h2>Step 2: Multi-Point Safety Inspection & Diagnostics</h2>
+              <p class="pane-desc">Assigned to: <strong>tech1@vehicle.com (Technician 1)</strong></p>
+            </div>
+
+            <div class="checklist-container">
+              <h3>Diagnostic Inspection Checklist</h3>
+              <div class="checklist-grid">
+                <label class="check-item"><input type="checkbox" checked> Brake Pads & Rotors (3.5mm wear)</label>
+                <label class="check-item"><input type="checkbox" checked> Engine Synthetic Oil & Filter</label>
+                <label class="check-item"><input type="checkbox" checked> Transmission Fluid & Gearbox</label>
+                <label class="check-item"><input type="checkbox" checked> Battery Health & Terminal Voltage</label>
+                <label class="check-item"><input type="checkbox"> Suspension Struts & Bushings</label>
+                <label class="check-item"><input type="checkbox" checked> OBD-II ECU Diagnostic Scan</label>
+              </div>
+            </div>
+
+            <div class="form-group full-width" style="margin-top: 18px;">
+              <label>Technician Findings & Diagnosis Notes *</label>
+              <textarea id="inp-findings" class="pega-input" rows="3">Front brake pads worn below 4mm threshold. Spark plugs showing minor carbon buildup. Recommended replacement of front pads, synthetic oil flush, and air intake filter.</textarea>
+            </div>
+
+            <div class="action-footer">
+              <button class="btn-secondary" onclick="goToStage(1)">← Back</button>
+              <div class="footer-right">
+                <button class="btn-primary" onclick="goToStage(3)">Submit Inspection Findings →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAGE 3: ESTIMATE APPROVAL -->
+          <div class="stage-pane" id="stage-3">
+            <div class="pane-header">
+              <h2>Step 3: Itemize Services & Cost Estimation</h2>
+              <p class="pane-desc">Declarative calculations compute Labor, Parts, and Taxes in Indian Rupees (₹).</p>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Labor Service Item</label>
+                <select id="sel-labor" class="pega-input" onchange="calculateCosts()">
+                  <option value="2400">Full Brake System Service (₹2,400.00)</option>
+                  <option value="1800">Engine Oil & Filter Service (₹1,800.00)</option>
+                  <option value="3500">Comprehensive 40-Point Maintenance (₹3,500.00)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Replacement Parts Package</label>
+                <select id="sel-parts" class="pega-input" onchange="calculateCosts()">
+                  <option value="4200">Ceramic Front Brake Pads + Oil Filter (₹4,200.00)</option>
+                  <option value="2800">Synthetic Engine Oil (4L) + Air Filter (₹2,800.00)</option>
+                  <option value="7500">Premium OEM Brake & Fluid Overhaul Kit (₹7,500.00)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Real-Time Calculation Ledger -->
+            <div class="cost-ledger">
+              <div class="ledger-row">
+                <span>Labor Services Total:</span>
+                <strong id="disp-labor">₹2,400.00</strong>
+              </div>
+              <div class="ledger-row">
+                <span>Replacement Parts Total:</span>
+                <strong id="disp-parts">₹4,200.00</strong>
+              </div>
+              <div class="ledger-row">
+                <span>Subtotal:</span>
+                <strong id="disp-subtotal">₹6,600.00</strong>
+              </div>
+              <div class="ledger-row">
+                <span>GST Tax (18%):</span>
+                <strong id="disp-tax">₹1,188.00</strong>
+              </div>
+              <div class="ledger-row total">
+                <span>Grand Total (Customer Payable):</span>
+                <strong id="disp-grand">₹7,788.00</strong>
+              </div>
+            </div>
+
+            <div class="approval-box">
+              <h4>Customer Authorization Status:</h4>
+              <div class="radio-group">
+                <label><input type="radio" name="auth" checked> Approved by Customer via SMS/Digital Signature</label>
+              </div>
+            </div>
+
+            <div class="action-footer">
+              <button class="btn-secondary" onclick="goToStage(2)">← Back</button>
+              <div class="footer-right">
+                <button class="btn-primary" onclick="goToStage(4)">Approve & Route to Execution →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAGE 4: SERVICE EXECUTION -->
+          <div class="stage-pane" id="stage-4">
+            <div class="pane-header">
+              <h2>Step 4: Repair Execution & Quality Audit</h2>
+              <p class="pane-desc">Live status tracking during workshop operations.</p>
+            </div>
+
+            <div class="execution-progress">
+              <div class="progress-step done">
+                <span class="icon">✅</span>
+                <div>
+                  <strong>Parts Dispatched from Warehouse</strong>
+                  <p>Ceramic Brake Pads & 5W-40 Synthetic Oil allocated</p>
+                </div>
+              </div>
+              <div class="progress-step in-progress">
+                <span class="icon">🔧</span>
+                <div>
+                  <strong>Work in Progress by Technician 1</strong>
+                  <p>Installation, rotor calibration, and engine oil flush</p>
+                </div>
+              </div>
+              <div class="progress-step">
+                <span class="icon">🔍</span>
+                <div>
+                  <strong>Final Road Test & Quality Inspection</strong>
+                  <p>Senior Service Advisor sign-off</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group full-width" style="margin-top: 20px;">
+              <label>Quality Assurance Sign-Off</label>
+              <input type="text" class="pega-input" value="Passed all safety checklists and ECU diagnostic road tests." readonly>
+            </div>
+
+            <div class="action-footer">
+              <button class="btn-secondary" onclick="goToStage(3)">← Back</button>
+              <div class="footer-right">
+                <button class="btn-primary" onclick="goToStage(5)">Complete Service & Bill →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAGE 5: SERVICE COMPLETION -->
+          <div class="stage-pane" id="stage-5">
+            <div class="pane-header">
+              <h2>Step 5: Service Completion & Digital Invoice</h2>
+              <p class="pane-desc">Service request has been successfully executed and resolved.</p>
+            </div>
+
+            <div class="success-banner">
+              <div class="success-icon">🎉</div>
+              <h3>Service Request Resolved: <span id="final-case-id">S-2026</span></h3>
+              <p>Vehicle is clean, tested, and ready for customer pickup.</p>
+            </div>
+
+            <div class="invoice-card">
+              <div class="invoice-header">
+                <div>
+                  <h4>SERVICE INVOICE</h4>
+                  <p id="inv-date">August 30, 2026</p>
+                </div>
+                <div class="inv-brand">UPlus Auto Services</div>
+              </div>
+              <div class="invoice-summary">
+                <p><strong>Customer:</strong> <span id="inv-cust">Naresh (vin-cus011)</span></p>
+                <p><strong>Vehicle:</strong> <span id="inv-veh">Hyundai Creta SX</span></p>
+                <p><strong>Amount Paid:</strong> <span class="paid-badge" id="inv-amount">₹7,788.00 (PAID)</span></p>
+              </div>
+            </div>
+
+            <div class="action-footer" style="justify-content: center;">
+              <button class="btn-primary" onclick="resetNewCase()">Create Another Service Request</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

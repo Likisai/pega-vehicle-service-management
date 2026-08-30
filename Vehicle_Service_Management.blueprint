@@ -1,0 +1,342 @@
+{
+  "blueprintVersion": "2.0",
+  "id": "bp-vehicle-service-management",
+  "application": {
+    "name": "Vehicle Service Management",
+    "description": "Comprehensive vehicle service management application covering vehicle intake, inspection, estimate generation, managerial review, customer approval, technician assignment, SLA tracking, and completion notification.",
+    "industry": "Automotive",
+    "businessObjectives": [
+      "Streamline customer check-in and vehicle intake (US-001)",
+      "Automate multi-point diagnostic inspection workflows (US-002)",
+      "Calculate transparent parts and labor estimates (US-003)",
+      "Enable seamless customer approval via web/portal (US-004)",
+      "Maintain central vehicle data and service history (US-005)",
+      "Enforce managerial review on high-value estimates (US-006)",
+      "Auto-assign service tasks to qualified technicians (US-007)",
+      "Notify customers immediately upon service completion (US-008)",
+      "Enforce Service Level Agreements across stages (US-009)",
+      "Intelligently route requests based on vehicle type (US-010)"
+    ]
+  },
+  "personas": [
+    {
+      "name": "Customer",
+      "description": "Vehicle owner who submits service requests, reviews estimates, and approves repairs (US-001, US-004)."
+    },
+    {
+      "name": "Service Advisor",
+      "description": "Customer-facing agent handling intake, vehicle handover, and communications."
+    },
+    {
+      "name": "Technician",
+      "description": "Certified mechanic who performs multi-point inspections, generates estimates, and conducts repairs (US-002, US-003, US-007)."
+    },
+    {
+      "name": "Service Manager",
+      "description": "Supervisor reviewing estimates, managing technician queues, and monitoring SLAs (US-006, US-009)."
+    },
+    {
+      "name": "Billing Specialist",
+      "description": "Processes final invoicing and payment upon completion."
+    }
+  ],
+  "caseTypes": [
+    {
+      "id": "case-service-request",
+      "name": "Service Request",
+      "description": "Primary case type managing vehicle service from initial customer intake to vehicle collection.",
+      "prefix": "SR-",
+      "stages": [
+        {
+          "id": "stage-submission",
+          "name": "Submission",
+          "type": "Primary",
+          "processes": [
+            {
+              "name": "Intake Process",
+              "steps": [
+                {
+                  "name": "Submit Vehicle Service Request",
+                  "userStory": "US-001",
+                  "type": "Collect Information",
+                  "routedTo": "Service Advisor",
+                  "instructions": "Collect customer contact details, vehicle information (VIN, plate, model, year), and reported issues.",
+                  "fields": [
+                    { "name": "CustomerName", "type": "Text", "required": true },
+                    { "name": "ContactPhone", "type": "Phone", "required": true },
+                    { "name": "EmailAddress", "type": "Email", "required": true },
+                    { "name": "VehicleType", "type": "Picklist", "options": ["Passenger Sedan/SUV", "Electric Vehicle", "Commercial / Fleet", "Heavy Duty"], "required": true },
+                    { "name": "VIN", "type": "Text", "required": true },
+                    { "name": "Mileage", "type": "Integer", "required": true },
+                    { "name": "ReportedIssues", "type": "Long Text", "required": true },
+                    { "name": "PreferredServiceDate", "type": "Date", "required": false }
+                  ]
+                },
+                {
+                  "name": "Route Service Request by Vehicle Type",
+                  "userStory": "US-010",
+                  "type": "Decision / Routing",
+                  "instructions": "Route service request to specialized queue based on Vehicle Type (EV Specialist Queue, Commercial Fleet Queue, or Standard Service Queue)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "stage-inspection",
+          "name": "Inspection",
+          "type": "Primary",
+          "sla": {
+            "userStory": "US-009",
+            "goal": "2 hours",
+            "deadline": "4 hours",
+            "passedDeadlineAction": "Increase urgency by 10 and notify Service Manager"
+          },
+          "processes": [
+            {
+              "name": "Vehicle Diagnostic Process",
+              "steps": [
+                {
+                  "name": "Auto Assign Technician",
+                  "userStory": "US-007",
+                  "type": "Automation / Routing",
+                  "instructions": "Automatically route and assign inspection to available technician based on vehicle category and mechanic skill."
+                },
+                {
+                  "name": "Perform Vehicle Inspection",
+                  "userStory": "US-002",
+                  "type": "Collect Information",
+                  "routedTo": "Assigned Technician",
+                  "instructions": "Complete multi-point vehicle inspection checklist.",
+                  "fields": [
+                    { "name": "BrakesCondition", "type": "Picklist", "options": ["Pass", "Attention Needed", "Fail / Urgent"], "required": true },
+                    { "name": "TiresCondition", "type": "Picklist", "options": ["Pass", "Attention Needed", "Fail / Urgent"], "required": true },
+                    { "name": "EngineDiagnostics", "type": "Picklist", "options": ["Clear", "Fault Codes Present"], "required": true },
+                    { "name": "BatteryHealth", "type": "Picklist", "options": ["Good", "Recharge", "Replace"], "required": true },
+                    { "name": "FluidLevels", "type": "Picklist", "options": ["Optimal", "Low", "Critical"], "required": true },
+                    { "name": "TechnicianFindings", "type": "Long Text", "required": true }
+                  ]
+                },
+                {
+                  "name": "Maintain Vehicle Data",
+                  "userStory": "US-005",
+                  "type": "Collect Information / Data Update",
+                  "instructions": "Persist and update vehicle history record, current mileage, and service records in central repository.",
+                  "fields": [
+                    { "name": "LastServiceDate", "type": "Date", "required": true },
+                    { "name": "UpdatedMileage", "type": "Integer", "required": true },
+                    { "name": "WarrantyStatus", "type": "Picklist", "options": ["Under Warranty", "Extended Warranty", "Expired"], "required": true },
+                    { "name": "ServiceHistoryNotes", "type": "Long Text", "required": false }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "stage-estimation",
+          "name": "Estimation & Review",
+          "type": "Primary",
+          "sla": {
+            "userStory": "US-009",
+            "goal": "3 hours",
+            "deadline": "6 hours",
+            "passedDeadlineAction": "Escalate to Service Manager"
+          },
+          "processes": [
+            {
+              "name": "Estimate & Manager Review Process",
+              "steps": [
+                {
+                  "name": "Generate Service Estimate",
+                  "userStory": "US-003",
+                  "type": "Collect Information / Calculation",
+                  "routedTo": "Technician / Service Advisor",
+                  "instructions": "Select required labor services and replacement parts; automatically calculate itemized and total estimated cost.",
+                  "fields": [
+                    { "name": "ServiceItemList", "type": "Field Group List", "description": "Labor services (Name, Hours, Rate, LineTotal)" },
+                    { "name": "PartItemList", "type": "Field Group List", "description": "Required parts (PartNumber, Name, Qty, UnitPrice, LineTotal)" },
+                    { "name": "TotalLaborCost", "type": "Currency", "calculated": true },
+                    { "name": "TotalPartsCost", "type": "Currency", "calculated": true },
+                    { "name": "EstimatedTax", "type": "Currency", "calculated": true },
+                    { "name": "GrandTotalEstimate", "type": "Currency", "calculated": true }
+                  ]
+                },
+                {
+                  "name": "Review Service Estimate",
+                  "userStory": "US-006",
+                  "type": "Approve / Review",
+                  "routedTo": "Service Manager",
+                  "instructions": "Service Manager reviews high-value estimates (e.g. > $1,000) or complex repairs before sending to customer.",
+                  "fields": [
+                    { "name": "ManagerReviewDecision", "type": "Picklist", "options": ["Approved for Customer", "Requires Re-estimation", "Discount Applied"], "required": true },
+                    { "name": "ManagerNotes", "type": "Long Text", "required": false }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "stage-approval",
+          "name": "Customer Approval",
+          "type": "Primary",
+          "sla": {
+            "userStory": "US-009",
+            "goal": "4 hours",
+            "deadline": "24 hours",
+            "passedDeadlineAction": "Send reminder notification to customer"
+          },
+          "processes": [
+            {
+              "name": "Customer Decision Process",
+              "steps": [
+                {
+                  "name": "Approve Service Estimate",
+                  "userStory": "US-004",
+                  "type": "Approve / Reject",
+                  "routedTo": "Customer",
+                  "instructions": "Customer reviews itemized estimate breakdown and accepts or declines the repairs.",
+                  "fields": [
+                    { "name": "CustomerDecision", "type": "Picklist", "options": ["Approved", "Rejected"], "required": true },
+                    { "name": "CustomerSignatureOrConsent", "type": "Text", "required": true },
+                    { "name": "CustomerNotes", "type": "Long Text", "required": false }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "stage-service-execution",
+          "name": "Service Execution",
+          "type": "Primary",
+          "sla": {
+            "userStory": "US-009",
+            "goal": "1 Day",
+            "deadline": "2 Days",
+            "passedDeadlineAction": "Raise Urgency by 20 points"
+          },
+          "processes": [
+            {
+              "name": "Repair Work Process",
+              "steps": [
+                {
+                  "name": "Perform Service Repairs",
+                  "type": "Collect Information",
+                  "routedTo": "Assigned Technician",
+                  "instructions": "Technician performs approved maintenance and repair jobs, recording actual labor hours and parts used."
+                },
+                {
+                  "name": "Quality Inspection & Test Drive",
+                  "type": "Collect Information",
+                  "routedTo": "Quality Lead",
+                  "instructions": "Conduct post-service safety check and confirm issue resolution."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "stage-completion",
+          "name": "Completion & Handover",
+          "type": "Resolution",
+          "processes": [
+            {
+              "name": "Notification & Handover Process",
+              "steps": [
+                {
+                  "name": "Notify Service Completion",
+                  "userStory": "US-008",
+                  "type": "Send Notification",
+                  "instructions": "Automated notification (Email/SMS) sent to customer stating vehicle is ready for pickup with invoice balance.",
+                  "fields": [
+                    { "name": "NotificationChannel", "type": "Picklist", "options": ["Email", "SMS", "Both"] },
+                    { "name": "VehicleReadyTimestamp", "type": "DateTime" }
+                  ]
+                },
+                {
+                  "name": "Payment & Vehicle Handover",
+                  "type": "Collect Information",
+                  "routedTo": "Billing Specialist",
+                  "instructions": "Collect invoice payment and hand over vehicle keys to customer. Resolve case as Resolved-Completed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "stage-rejected",
+          "name": "Service Cancelled",
+          "type": "Alternate",
+          "processes": [
+            {
+              "name": "Cancellation Process",
+              "steps": [
+                {
+                  "name": "Record Rejection Details",
+                  "type": "Collect Information",
+                  "instructions": "Log customer reason for rejecting estimate and arrange vehicle return without repair. Resolve as Resolved-Cancelled."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "dataObjects": [
+    {
+      "name": "Vehicle",
+      "userStory": "US-005, US-010",
+      "description": "Stores vehicle details, type, specification, and service records.",
+      "fields": [
+        { "name": "VIN", "type": "Text" },
+        { "name": "LicensePlate", "type": "Text" },
+        { "name": "Make", "type": "Text" },
+        { "name": "Model", "type": "Text" },
+        { "name": "Year", "type": "Integer" },
+        { "name": "VehicleType", "type": "Text" },
+        { "name": "CurrentMileage", "type": "Integer" },
+        { "name": "WarrantyStatus", "type": "Text" }
+      ]
+    },
+    {
+      "name": "Customer",
+      "userStory": "US-001, US-004",
+      "description": "Stores customer profile and contact information.",
+      "fields": [
+        { "name": "CustomerID", "type": "Text" },
+        { "name": "FullName", "type": "Text" },
+        { "name": "Email", "type": "Email" },
+        { "name": "Phone", "type": "Phone" },
+        { "name": "Address", "type": "Address" }
+      ]
+    },
+    {
+      "name": "InspectionRecord",
+      "userStory": "US-002",
+      "description": "Details the multi-point inspection checks and technician observations.",
+      "fields": [
+        { "name": "BrakeStatus", "type": "Text" },
+        { "name": "TireStatus", "type": "Text" },
+        { "name": "BatteryStatus", "type": "Text" },
+        { "name": "FluidStatus", "type": "Text" },
+        { "name": "InspectionSummary", "type": "Text" }
+      ]
+    },
+    {
+      "name": "ServiceEstimate",
+      "userStory": "US-003, US-004, US-006",
+      "description": "Calculated parts, labor, tax, and estimate status.",
+      "fields": [
+        { "name": "EstimateID", "type": "Text" },
+        { "name": "LaborTotal", "type": "Currency" },
+        { "name": "PartsTotal", "type": "Currency" },
+        { "name": "Tax", "type": "Currency" },
+        { "name": "GrandTotal", "type": "Currency" },
+        { "name": "ApprovalStatus", "type": "Text" }
+      ]
+    }
+  ]
+}
