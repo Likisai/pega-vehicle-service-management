@@ -1,7 +1,7 @@
 # Vehicle Service Management System
 ### 🚗 Pega Infinity Capstone Project & Interactive Portal Demo
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo_on_GitHub_Pages-blue?style=for-the-badge&logo=github)](https://YOUR_USERNAME.github.io/pega-vehicle-service-management/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo_on_GitHub_Pages-blue?style=for-the-badge&logo=github)](https://likisai.github.io/pega-vehicle-service-management/)
 [![Pega Version](https://img.shields.io/badge/Pega-Infinity_24.1_/_8.8-orange?style=for-the-badge&logo=pega)](https://www.pega.com/)
 
 An enterprise-grade Vehicle Service & Repair Management Application built using **Pega Infinity Low-Code Platform**, **Pega GenAI Blueprint**, and modern **Constellation UI Architecture**. 
@@ -52,7 +52,7 @@ graph LR
 ## 🚀 Live Interactive Demo
 
 Try the interactive browser prototype hosted on GitHub Pages:
-👉 **[Open Live Demo Portal](https://YOUR_USERNAME.github.io/pega-vehicle-service-management/)**
+👉 **[Open Live Demo Portal](https://likisai.github.io/pega-vehicle-service-management/)**
 
 ---
 
